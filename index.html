@@ -57,6 +57,22 @@
       });
     }
 
+    function loadTasks() {
+      const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      const taskList = document.getElementById("task-list");
+
+      taskList.innerHTML = "";
+      tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+        li.className = "task-item";
+        li.innerHTML = `
+          ${task}
+          <button onclick="deleteTask(${index})">Delete</button>
+        `;
+        taskList.appendChild(li);
+      });
+    }
+    
     // Add a new task
     function addTask() {
       const inputField = document.getElementById("task-input");
