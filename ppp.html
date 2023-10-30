@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>To-Do List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    #task-input {
+      width: 60%;
+      padding: 10px;
+      margin: 10px;
+    }
+    #task-list {
+      list-style: none;
+      padding: 0;
+    }
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin: 5px;
+    }
+    .task-item button {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>To-Do List</h1>
+  <input type="text" id="task-input" placeholder="Add a new task">
+  <button onclick="addTask()">Add Task</button>
+  <ul id="task-list"></ul>
+
+  <script>
+    // Load tasks from local storage
+    function loadTasks() {
+      const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      const taskList = document.getElementById("task-list");
+
+      taskList.innerHTML = "";
+      tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+        li.className = "task-item";
+        li.innerHTML = `
+          ${task}
+          <button onclick="deleteTask(${index})">Delete</button>
+        `;
+        taskList.appendChild(li);
+      });
+    }
+
+    // Add a new task
+    function addTask() {
+      const inputField = document.getElementById("task-input");
+      const task = inputField.value;
+
+      if (task.trim() !== "") {
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        tasks.push(task);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+
+        inputField.value = "";
+        loadTasks();
+      }
+    }
+
+    // Delete a task
+    function deleteTask(index) {
+      const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      tasks.splice(index, 1);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+
+      loadTasks();
+    }
+
+    // Initial load of tasks
+    loadTasks();
+  </script>
+</body>
+</html>
